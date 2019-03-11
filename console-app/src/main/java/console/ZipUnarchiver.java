@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -26,7 +25,7 @@ public class ZipUnarchiver {
      */
     public void unarchive(String zipFilePath, String outputPath) throws IOException {
         try (FileInputStream fIn = new FileInputStream(zipFilePath);
-             ZipInputStream zIn = new ZipInputStream(fIn, StandardCharsets.UTF_8)
+             ZipInputStream zIn = new ZipInputStream(fIn)
         ) {
             new File(outputPath).mkdirs();
             boolean process = this.writeNextEntry(zIn, outputPath);
