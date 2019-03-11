@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Coonfiguration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss} %p: %msg -- %l %n"/>
+        </Console>
+        <!-- Файловый аппендер -->
+        <!--        <File name="file" fileName="d:\backup.log">
+                    <PatternLayout>
+                        <Pattern>%d{dd-MM-yyyy HH:mm:ss} [%-5p][%-20c{1}] [%-20M:%L] - %msg%n</Pattern>
+                    </PatternLayout>
+                </File>-->
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <!--<AppenderRef ref="file"/>-->
+        </Root>
+    </Loggers>
+</Coonfiguration>
