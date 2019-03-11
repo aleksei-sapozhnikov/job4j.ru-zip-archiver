@@ -79,8 +79,6 @@ public class ZipUnarchiver {
      */
     private void createAndWriteFile(ZipInputStream zInput, String resultRootPath, ZipEntry entry) throws IOException {
         File output = new File(resultRootPath, entry.getName());
-        boolean res = new File(output.getParent()).mkdirs();
-        System.out.println(res);
         this.writeContent(zInput, output);
     }
 
