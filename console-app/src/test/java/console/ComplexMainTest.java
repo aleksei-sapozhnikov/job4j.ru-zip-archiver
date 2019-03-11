@@ -1,6 +1,6 @@
 package console;
 
-import console.util.FileStructureUtils;
+import console.testutils.FileStructureUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,9 +24,8 @@ public class ComplexMainTest {
         this.zipFilePath = String.format("%s/%s", root, "archive.zip");
         this.resultPath = String.format("%s/%s", root, "result");
         //
-        root.mkdirs();
-        var source = this.utils.getAllFilesHierarchy(this.sourcePath);
-        this.utils.createAllFiles(source);
+        var sourceHierarchy = this.utils.getAllFilesHierarchy(this.sourcePath);
+        this.utils.createAllFiles(sourceHierarchy);
     }
 
     @Before

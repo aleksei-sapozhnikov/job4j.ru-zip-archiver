@@ -1,6 +1,6 @@
 package console;
 
-import console.ZipUnarchiver;
+import console.testutils.FileStructureUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,27 +12,25 @@ import static org.junit.Assert.assertThat;
 
 public class ZipUnarchiverTest {
 
-    private final ZipUnarchiver test = new ZipUnarchiver();
+    private final FileStructureUtils utils = new FileStructureUtils();
 
-    private final String rootPath;
+    private final ZipUnarchiver unarchiver = new ZipUnarchiver();
+
     private final String zipFilePath;
     private final String resultPath;
 
-    public ZipUnarchiverTest() {
-        String sourceFolder = String.format("%s/%s",
-                this.getClass().getPackageName().replaceAll("\\.", "/"),
-                "zipUnarchiverTest"
-        );
-        ClassLoader loader = this.getClass().getClassLoader();
-        this.rootPath = loader.getResource(sourceFolder).getPath();
-        this.zipFilePath = String.format("%s/%s", this.rootPath, "source.zipfile");
-        this.resultPath = String.format("%s/%s", this.rootPath, "result");
+    public ZipUnarchiverTest() throws IOException {
+        File root = this.utils.createTempDirectory("ComplexMainTest");
+        this.resultPath = String.format("%s/%s", root, "result");
+        //
+        this.zipFilePath = this.getClass().getClassLoader()
+                .getResource("console/source.zip").getPath();
     }
 
     @Before
     public void deleteAllResults() {
-        File[] resultFiles = this.getFilesHierarchy(this.resultPath);
-        this.deleteAllIfExist(resultFiles);
+        var resultFiles = this.utils.getAllFilesHierarchy(this.resultPath);
+        this.utils.deleteAllIfExist(resultFiles);
         new File(this.resultPath).delete();
     }
 
@@ -40,48 +38,16 @@ public class ZipUnarchiverTest {
     public void whenUnarchiveThenResultFolderCreated() throws IOException {
         File result = new File(this.resultPath);
         assertThat(result.exists(), is(false));
-        this.test.unarchive(this.zipFilePath, this.resultPath);
+        this.unarchiver.unarchive(this.zipFilePath, this.resultPath);
         assertThat(result.exists(), is(true));
         assertThat(result.isDirectory(), is(true));
     }
 
     @Test
     public void whenUnarchiveThenFilesOnPlace() throws IOException {
-        File[] resultHierarchy = this.getFilesHierarchy(this.resultPath);
-        assertThat(this.allExist(resultHierarchy), is(false));
-        this.test.unarchive(this.zipFilePath, this.resultPath);
-        assertThat(this.allExist(resultHierarchy), is(true));
+        var resultHierarchy = this.utils.getAllFilesHierarchy(this.resultPath);
+        assertThat(this.utils.allExist(resultHierarchy), is(false));
+        this.unarchiver.unarchive(this.zipFilePath, this.resultPath);
+        assertThat(this.utils.allExist(resultHierarchy), is(true));
     }
-
-    private void deleteAllIfExist(File[] files) {
-        for (File file : files) {
-            file.delete();
-        }
-    }
-
-    private boolean allExist(File[] files) {
-        boolean result = true;
-        for (File file : files) {
-            if (!file.exists()) {
-                result = false;
-                break;
-            }
-        }
-        return result;
-    }
-
-    private File[] getFilesHierarchy(String root) {
-        File innerDir = new File(root, "inner_dir");
-        File emptyDir = new File(root, "empty_dir");
-        return new File[]{
-                new File(root, "test_1.html"),
-                new File(root, "test2.xml"),
-                new File(innerDir, "test_inner_1.pdf"),
-                new File(innerDir, "test_inner_2.xml"),
-                innerDir,
-                emptyDir
-        };
-    }
-
-
 }

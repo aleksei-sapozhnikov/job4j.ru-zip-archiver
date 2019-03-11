@@ -1,4 +1,4 @@
-package console.util;
+package console.testutils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

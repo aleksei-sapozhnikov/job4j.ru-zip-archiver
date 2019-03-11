@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -25,7 +26,7 @@ public class ZipUnarchiver {
      */
     public void unarchive(String zipFilePath, String outputPath) throws IOException {
         try (FileInputStream fIn = new FileInputStream(zipFilePath);
-             ZipInputStream zIn = new ZipInputStream(fIn)
+             ZipInputStream zIn = new ZipInputStream(fIn, StandardCharsets.UTF_8)
         ) {
             new File(outputPath).mkdirs();
             boolean process = this.writeNextEntry(zIn, outputPath);
@@ -79,6 +80,7 @@ public class ZipUnarchiver {
      */
     private void createAndWriteFile(ZipInputStream zInput, String resultRootPath, ZipEntry entry) throws IOException {
         File output = new File(resultRootPath, entry.getName());
+        new File(output.getParent()).mkdirs();
         this.writeContent(zInput, output);
     }
 
@@ -93,7 +95,7 @@ public class ZipUnarchiver {
      * @return Name without last slash symbol ('mydir/' --> 'mydir').
      */
     private String deleteLastSlash(String dirName) {
-        return dirName.substring(0, dirName.length() - 1);
+        return dirName.endsWith("/") ? dirName.substring(0, dirName.length() - 1) : dirName;
     }
 
     /**
