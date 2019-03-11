@@ -24,7 +24,7 @@ public class ZipUnarchiverTest {
         this.resultPath = String.format("%s/%s", root, "result");
         //
         this.zipFilePath = this.getClass().getClassLoader()
-                .getResource("console/source.zip").getPath();
+                .getResource("console/source.zipfile").getPath();
     }
 
     @Before
