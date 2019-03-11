@@ -1,0 +1,24 @@
+# Use java
+language: java
+
+jdk: openjdk11
+
+# Don't need super user
+sudo: false
+
+# Code coverage count after successful build
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+# Set environment variables for https://codecov.io/
+env:
+  global:
+    - CODECOV_TOKEN="ee2100c5-e671-41ae-83cf-1fa6552323b8"
+
+# Notification if build failed.
+#notifications:
+#  email:
+#    recipients:
+#      - vermucht@gmail.com
+#on_success: never  # default: change
+#on_failure: never  # default: always

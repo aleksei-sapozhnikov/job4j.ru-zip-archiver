@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -54,7 +55,7 @@ public class ZipArchiver {
         File output = new File(zipFilePath);
         int rootLength = source.getPath().length() + File.separator.length();
         try (FileOutputStream fOut = new FileOutputStream(output);
-             ZipOutputStream zOut = new ZipOutputStream(fOut)
+             ZipOutputStream zOut = new ZipOutputStream(fOut, StandardCharsets.UTF_8)
         ) {
             this.processDirectory(zOut, source, rootLength);
         }

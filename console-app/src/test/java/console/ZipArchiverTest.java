@@ -1,6 +1,6 @@
 package console;
 
-import console.ZipArchiver;
+import console.testutils.FileStructureUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -12,28 +12,26 @@ import static org.junit.Assert.assertThat;
 
 public class ZipArchiverTest {
 
+    private final FileStructureUtils utils = new FileStructureUtils();
+
     private final ZipArchiver test = new ZipArchiver();
 
     private final String sourcePath;
     private final String zipFilePath;
 
-    public ZipArchiverTest() {
-        String sourceFolder = String.format("%s/%s",
-                this.getClass().getPackageName().replaceAll("\\.", "/"),
-                "zipArchiverTest"
-        );
-        ClassLoader loader = this.getClass().getClassLoader();
-        String rootPath = loader.getResource(sourceFolder).getPath();
-        this.sourcePath = String.format("%s/%s", rootPath, "source");
-        this.zipFilePath = String.format("%s/%s", rootPath, "result.zip");
+    public ZipArchiverTest() throws IOException {
+        File root = this.utils.createTempDirectory("ZipArchiverTest");
+        this.sourcePath = String.format("%s/%s", root, "source");
+        this.zipFilePath = String.format("%s/%s", root, "result.zip");
+        //
+        var sourceHierarchy = this.utils.getAllFilesHierarchy(this.sourcePath);
+        this.utils.createAllFiles(sourceHierarchy);
     }
 
     @Test
     public void whenArchiveThenZipFileCreated() throws IOException {
         File zipFile = new File(this.zipFilePath);
-        if (zipFile.exists()) {
-            zipFile.delete();
-        }
+        zipFile.delete();
         assertThat(zipFile.exists(), is(false));
         this.test.archive(this.sourcePath, this.zipFilePath);
         assertThat(zipFile.exists(), is(true));

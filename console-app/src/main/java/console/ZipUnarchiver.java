@@ -79,8 +79,7 @@ public class ZipUnarchiver {
      */
     private void createAndWriteFile(ZipInputStream zInput, String resultRootPath, ZipEntry entry) throws IOException {
         File output = new File(resultRootPath, entry.getName());
-        boolean res = new File(output.getParent()).mkdirs();
-        System.out.println(res);
+        new File(output.getParent()).mkdirs();
         this.writeContent(zInput, output);
     }
 
@@ -95,7 +94,7 @@ public class ZipUnarchiver {
      * @return Name without last slash symbol ('mydir/' --> 'mydir').
      */
     private String deleteLastSlash(String dirName) {
-        return dirName.substring(0, dirName.length() - 1);
+        return dirName.endsWith("/") ? dirName.substring(0, dirName.length() - 1) : dirName;
     }
 
     /**

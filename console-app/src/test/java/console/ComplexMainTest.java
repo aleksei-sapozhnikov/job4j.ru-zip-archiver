@@ -1,52 +1,47 @@
 package console;
 
-import console.Main;
+import console.testutils.FileStructureUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URL;
+import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class ComplexMainTest {
 
+    private final FileStructureUtils utils = new FileStructureUtils();
+
     private final String sourcePath;
     private final String zipFilePath;
     private final String resultPath;
 
-    public ComplexMainTest() {
-        String sourceFolder = String.format("%s/%s",
-                this.getClass().getPackageName().replaceAll("\\.", "/"),
-                "complexMainTest"
-        );
-        ClassLoader loader = this.getClass().getClassLoader();
-        String rootPath = loader.getResource(sourceFolder).getPath();
-        this.sourcePath = String.format("%s/%s", rootPath, "source");
-        this.zipFilePath = String.format("%s/%s", rootPath, "archive.zip");
-        this.resultPath = String.format("%s/%s", rootPath, "result");
+    public ComplexMainTest() throws IOException {
+        File root = this.utils.createTempDirectory("ComplexMainTest");
+        this.sourcePath = String.format("%s/%s", root, "source");
+        this.zipFilePath = String.format("%s/%s", root, "archive.zip");
+        this.resultPath = String.format("%s/%s", root, "result");
+        //
+        var sourceHierarchy = this.utils.getAllFilesHierarchy(this.sourcePath);
+        this.utils.createAllFiles(sourceHierarchy);
     }
 
     @Before
     public void deleteExistingResultFiles() {
-        File zipFile = new File(this.zipFilePath);
-        if (zipFile.exists()) {
-            zipFile.delete();
-        }
-        //
-        File[] resultHierarchy = this.getAllFilesHierarchy(this.resultPath);
-        this.deleteAllIfExist(resultHierarchy);
+        new File(this.zipFilePath).delete();
+        var resultHierarchy = this.utils.getAllFilesHierarchy(this.resultPath);
+        this.utils.deleteAllIfExist(resultHierarchy);
     }
 
     @Test
     public void makeArchiveThenUnarchive() {
-        File[] sourceHierarchy = this.getAllFilesHierarchy(this.sourcePath);
+        var sourceHierarchy = this.utils.getAllFilesHierarchy(this.sourcePath);
         File zipFile = new File(this.zipFilePath);
-        File[] resultHierarchy = this.getAllFilesHierarchy(this.resultPath);
-        assertThat(this.allExist(sourceHierarchy), is(true));
-        assertThat(this.allExist(resultHierarchy), is(false));
+        var resultHierarchy = this.utils.getAllFilesHierarchy(this.resultPath);
+        assertThat(this.utils.allExist(sourceHierarchy), is(true));
+        assertThat(this.utils.allExist(resultHierarchy), is(false));
         assertThat(zipFile.exists(), is(false));
         //
         String argsArchiveStr = String.format("-a %s -s %s -o %s",
@@ -57,18 +52,18 @@ public class ComplexMainTest {
         Main.main(argsUnarchiveStr.split(" "));
         //
         assertThat(zipFile.exists(), is(true));
-        assertThat(this.allExist(resultHierarchy), is(true));
+        assertThat(this.utils.allExist(resultHierarchy), is(true));
     }
 
     @Test
     public void makeArchiveHtmlPdfThenUnarchive() {
-        File[] sourceHierarchy = this.getAllFilesHierarchy(this.sourcePath);
+        var sourceHierarchy = this.utils.getAllFilesHierarchy(this.sourcePath);
         File zipFile = new File(this.zipFilePath);
-        File[] resultHierarchyAll = this.getAllFilesHierarchy(this.resultPath);
-        File[] resultHierarchyHtmlPdf = this.getHtmlPdfFilesHierarchy(this.resultPath);
-        assertThat(this.allExist(sourceHierarchy), is(true));
-        assertThat(this.allExist(resultHierarchyAll), is(false));
-        assertThat(this.allExist(resultHierarchyHtmlPdf), is(false));
+        var resultHierarchyAll = this.utils.getAllFilesHierarchy(this.resultPath);
+        var resultHierarchyHtmlPdf = this.utils.getHtmlPdfFilesHierarchy(this.resultPath);
+        assertThat(this.utils.allExist(sourceHierarchy), is(true));
+        assertThat(this.utils.allExist(resultHierarchyAll), is(false));
+        assertThat(this.utils.allExist(resultHierarchyHtmlPdf), is(false));
         assertThat(zipFile.exists(), is(false));
         //
         String argsArchiveStr = String.format("-a %s -s %s -o %s -e %s",
@@ -79,47 +74,8 @@ public class ComplexMainTest {
         Main.main(argsUnarchiveStr.split(" "));
         //
         assertThat(zipFile.exists(), is(true));
-        assertThat(this.allExist(resultHierarchyAll), is(false));
-        assertThat(this.allExist(resultHierarchyHtmlPdf), is(true));
-    }
-
-    private File[] getAllFilesHierarchy(String root) {
-        File innerDir = new File(root, "inner_dir");
-        File emptyDir = new File(root, "empty_dir");
-        return new File[]{
-                new File(root, "test_1.html"),
-                new File(root, "test2.xml"),
-                new File(innerDir, "test_inner_1.pdf"),
-                new File(innerDir, "test_inner_2.xml"),
-                innerDir,
-                emptyDir
-        };
-    }
-
-    private File[] getHtmlPdfFilesHierarchy(String root) {
-        File innerDir = new File(root, "inner_dir");
-        return new File[]{
-                new File(root, "test_1.html"),
-                new File(innerDir, "test_inner_1.pdf"),
-                innerDir,
-        };
-    }
-
-    private boolean allExist(File[] files) {
-        boolean result = true;
-        for (File file : files) {
-            if (!file.exists()) {
-                result = false;
-                break;
-            }
-        }
-        return result;
-    }
-
-    private void deleteAllIfExist(File[] files) {
-        for (File file : files) {
-            file.delete();
-        }
+        assertThat(this.utils.allExist(resultHierarchyAll), is(false));
+        assertThat(this.utils.allExist(resultHierarchyHtmlPdf), is(true));
     }
 
 }
