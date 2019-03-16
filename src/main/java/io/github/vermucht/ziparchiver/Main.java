@@ -26,7 +26,8 @@ public class Main {
         try {
             new ActionPerformer(new InstancesFactory()).perform(args);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            System.out.println("Error: " + e.getMessage());
+            System.out.println("Check your input arguments and try again");
         }
     }
 }
