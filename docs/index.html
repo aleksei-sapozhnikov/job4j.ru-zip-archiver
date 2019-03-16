@@ -12,7 +12,7 @@
     <!-- Main CSS -->
     <link href="main.css" rel="stylesheet">
 
-    <title>Проекты — Алексей Сапожников</title>
+    <title>Консольный zip-архиватор — Алексей Сапожников</title>
 </head>
 <body>
 
@@ -20,9 +20,9 @@
     <div class="item-header">
         Консольный zip-архиватор
     </div>
-    <div>
+    <div class="item-description-block">
         Задание:
-        <ol>
+        <ul class="nav nav-tabs">
             <li>Задана директория проекта, например: c:\project\</li>
             <li>В качестве ключей передаются расширения файлов, которые должны попасть в архив.</li>
             <li>Архив должен сохранять структуру проекта: вложенные папки и файлы в них.</li>
@@ -38,9 +38,10 @@
                     <li><i>-e xml,pdf,txt:</i> Расширения файлов, которые нужно включить в проект (extensions).</li>
                 </ul>
             </li>
-        </ol>
+        </ul>
     </div>
-    <div>
+
+    <div class="item-description-block">
         Результат:
         <ol>
             <li>Проект создан с использованием сборщика Maven, который запаковывает проект в jar-файл.</li>
