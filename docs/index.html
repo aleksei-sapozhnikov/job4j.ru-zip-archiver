@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <!-- Bootstrap CSS -->
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+    <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Main CSS -->
+    <link href="main.css" rel="stylesheet">
+
+    <title>Проекты — Алексей Сапожников</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="item-header">
+        Консольный zip-архиватор
+    </div>
+    <div class="item-description-block">
+        Задание:
+        <ol>
+            <li>Задана директория проекта, например: c:\project\</li>
+            <li>В качестве ключей передаются расширения файлов, которые должны попасть в архив.</li>
+            <li>Архив должен сохранять структуру проекта: вложенные папки и файлы в них.</li>
+            <li>Для архивации использовать класс java.util.zip.ZipOutputStream.</li>
+            <li>Запуск архивации:
+                <i>java-jar zip-archiver.jar -a archive -s /home/john/project -o /home/john/my_project.zip -e
+                    xml,pdf,txt</i>
+                <ul>
+                    <li><i>zip-archiver.jar:</i> скомпилированный файл приложения.</li>
+                    <li><i>-a archive:</i> действие - архивировать (action).</li>
+                    <li><i>-s /home/john/project:</i> источник, папка с проектом (source).</li>
+                    <li><i>-o /home/john/my_project.zip:</i> результирующий файл (output).</li>
+                    <li><i>-e xml,pdf,txt:</i> Расширения файлов, которые нужно включить в проект (extensions).</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div class="item-description-block">
+        Результат:
+        <ol>
+            <li>Проект создан с использованием сборщика Maven, который запаковывает проект в jar-файл.</li>
+            <li>Отдельный класс анализирует и проверяет переданные параметры приложения.</li>
+            <li>При запуске без параметров приложение выводит справку по использованию.</li>
+            <li>Написаны автоматические тесты с использованием JUnit, Mockito.
+                Один из тестов вначале архивирует проект, затем разархивирует и проверяет - получилось ли в конце то же
+                самое, что было изначально.
+            </li>
+            <li>Структура проекта для тестов создается во временной директории во время самих тестов. Нет нужды
+                отправлять на Github заранее заготовленные файлы.
+            </li>
+        </ol>
+    </div>
+</div>
+
+</body>
+</html>
