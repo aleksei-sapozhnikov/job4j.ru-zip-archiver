@@ -61,8 +61,8 @@ public class ActionPerformer {
     private void printHelp(Consumer<String> consumer) {
         consumer.accept(new StringJoiner(System.lineSeparator())
                 .add("=== Simple zip archiver/unarchiver ===")
-                .add("Usage: 'archiver -a {action} -s {source} -o {output} -e {extensions}'")
-                .add("Example: 'archiver -a archive -s /home/john/project -o /home/john/my_project.zip -e xml,pdf,txt'")
+                .add("Usage: 'zip-archiver -a {action} -s {source} -o {output} -e {extensions}'")
+                .add("Example: 'zip-archiver -a archive -s /home/john/project -o /home/john/my_project.zip -e xml,pdf,txt'")
                 .add("Parameters:")
                 .add("  -a {action}: action to do. Values:")
                 .add("       archive: make zip archive from {source} folder to {output} file")
