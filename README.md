@@ -36,7 +36,9 @@
 
 ### Архивация проекта
 
-1. Создадим в папке `project` простой [проект исследования животных](/docs/animals), который называется `animals`.
+1. Создадим в папке `project` простой 
+[проект исследования животных](https://github.com/vermucht/zip-archiver/tree/master/docs/animals), 
+который называется `animals`.
     
     Для удобства положим также в папку `project` наш архиватор `zip-archiver.jar`.
 
